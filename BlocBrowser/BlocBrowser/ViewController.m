@@ -37,7 +37,7 @@
     [self addButtonTargets];
     
     self.textField.text = nil;
-    [self updateButtonAndTitle];
+    [self updateButtonsAndTitle];
 }
 
 - (void) addButtonTargets {
@@ -88,6 +88,16 @@
     }
     
     self.view = mainView;
+    
+    UIAlertController *greeting = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Welcome!", @"Welcome")
+                                                                   message:@"Welcome Jabroni!"
+                                                               preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"NO!!!!", nil)
+                                                       style:UIAlertActionStyleCancel handler:nil];
+    
+    [greeting addAction:noAction];
+    
+    [self presentViewController:greeting animated:YES completion:nil];
 }
 
 - (void)viewDidLoad {
