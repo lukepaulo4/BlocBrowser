@@ -73,6 +73,8 @@
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
+    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
+    
     
 }
 
@@ -86,8 +88,6 @@
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
-
 }
 
 #pragma mark - UITextFieldDelegate
