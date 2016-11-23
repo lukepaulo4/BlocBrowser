@@ -13,7 +13,7 @@
 #define kWebBrowserBackString NSLocalizedString(@"Back", @"Back command")
 #define kWebBrowserForwardString NSLocalizedString(@"Forward", @"Forward command")
 #define kWebBrowserStopString NSLocalizedString(@"Stop", @"Stop command")
-#define kWebBrowserRefreshString NSLocalizedString(@"Refresh", @"Refresh command")
+#define kWebBrowserRefreshString NSLocalizedString(@"Refresh", @"Reload command")
 
 @interface ViewController () <WKNavigationDelegate, UITextFieldDelegate, AwesomeFloatingToolbarDelegate>
 
@@ -28,19 +28,6 @@
 @implementation ViewController
 
 #pragma mark UIViewController
-
-- (void) resetWebView {
-    [self.webView removeFromSuperview];
-    
-    WKWebView *newWebView = [[WKWebView alloc] init];
-    newWebView.navigationDelegate = self;
-    [self.view addSubview:newWebView];
-    
-    self.webView = newWebView;
-    
-    self.textField.text = nil;
-    [self updateButtonsAndTitle];
-}
 
 - (void)loadView {
     UIView *mainView = [UIView new];
@@ -58,6 +45,7 @@
     self.textField.delegate = self;
     
     self.awesomeToolbar = [[AwesomeFloatingToolbar alloc] initWithFourTitles:@[kWebBrowserBackString, kWebBrowserForwardString, kWebBrowserStopString, kWebBrowserRefreshString]];
+    self.awesomeToolbar.delegate = self;
     
     for (UIView *viewToAdd in @[self.webView, self.textField, self.awesomeToolbar]) {
         [mainView addSubview:viewToAdd];
@@ -112,7 +100,7 @@
 
 #pragma mark - WKNavigationDelegate
 
-- (void)webView:(WKWebView *)webView didStartPovisionalNavigation:(WKNavigation *)navigation {
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     [self updateButtonsAndTitle];
 }
 
@@ -142,6 +130,8 @@
 
 }
 
+#pragma mark - Miscellaneous
+
 - (void) updateButtonsAndTitle {
     NSString *webpageTitle = [self.webView.title copy];
     if ([webpageTitle length]) {
@@ -162,6 +152,20 @@
     [self.awesomeToolbar setEnabled:[self.webView isLoading] forButtonWithTitle:kWebBrowserStopString];
     [self.awesomeToolbar setEnabled:![self.webView isLoading] && self.webView.URL forButtonWithTitle:kWebBrowserRefreshString];
 
+}
+
+
+- (void) resetWebView {
+    [self.webView removeFromSuperview];
+    
+    WKWebView *newWebView = [[WKWebView alloc] init];
+    newWebView.navigationDelegate = self;
+    [self.view addSubview:newWebView];
+    
+    self.webView = newWebView;
+    
+    self.textField.text = nil;
+    [self updateButtonsAndTitle];
 }
 
 #pragma mark - AwesomeFloatingToolbarDelegate
@@ -188,6 +192,8 @@
                     
     if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
         toolbar.frame = potentialNewFrame;
+        
+        NSLog(@"damn tryer");
     }
 }
 
