@@ -75,8 +75,10 @@
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-  //  self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
-
+    /* Already called this. When call it here, it resets origin when trying to move this
+    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
+    */
+    
 }
 
 #pragma mark - UITextFieldDelegate
@@ -200,7 +202,13 @@
                 
 - (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
     
-    CGPoint startingPoint = toolbar.frame.origin;
+    //Make a point in the center of the toolbar. The frame for toolbar is 20, 100, 280, 60 --(x,y) = (160,130)
+    NSUInteger xCor = toolbar.frame.origin.x + 140;
+    NSUInteger yCor = toolbar.frame.origin.y + 30;
+    
+    CGPoint startingPoint = CGPointMake(xCor, yCor);
+    
+    //CGPoint startingPoint = toolbar.frame.origin;
     
     CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y,
                                           CGRectGetWidth(toolbar.frame) * scale ,
